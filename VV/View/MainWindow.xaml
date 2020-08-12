@@ -97,7 +97,8 @@
                                 </Button.Style>
                             </Button>
                             <Button Content="{materialDesign:PackIcon Kind=Delete}" IsEnabled="{Binding ElementName=gridStaffs, Path=SelectedItems.Count}"
-                                    Command="{Binding DeleteStaffCommand}" CommandParameter="{Binding SelectStaff}"/>
+                                    Command="{Binding DeleteStaffCommand}" CommandParameter="{Binding SelectStaff}"                                    
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"/>
                             <Button Content="{materialDesign:PackIcon Kind=ContentSave}" Command="{Binding SaveCommand}"
                                     CommandParameter="{Binding ElementName=SnackbarStaffs}">
                                 <Button.Style>
@@ -191,7 +192,8 @@
                                 </Button.Style>
                             </Button>
                             <Button Content="{materialDesign:PackIcon Kind=Delete}" IsEnabled="{Binding ElementName=gridSubdivisions,
-                                Path=SelectedItems.Count}" Command="{Binding DeleteSubdivisionCommand}" CommandParameter="{Binding SelectSubdivision}"/>
+                                Path=SelectedItems.Count}" Command="{Binding DeleteSubdivisionCommand}" CommandParameter="{Binding SelectSubdivision}"
+                                    Style="{StaticResource MaterialDesignIconForegroundButton}"/>
                             <Button Content="{materialDesign:PackIcon Kind=ContentSave}" Command="{Binding SaveCommand}"
                                     CommandParameter="{Binding ElementName=SnackbarSubdivisions}">
                                 <Button.Style>
