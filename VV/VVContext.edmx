@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище VVContext" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="orders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Number" Type="uint" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="IdEmployee" Type="uint" />
+        </EntityType>
+        <EntityType Name="staff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="MiddleName" Type="varchar" MaxLength="50" />
+          <Property Name="DateOfBirth" Type="date" />
+          <Property Name="Floor" Type="enum" />
+          <Property Name="IdSubdivision" Type="uint" />
+        </EntityType>
+        <EntityType Name="subdivision">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+          <Property Name="IdEmployee" Type="uint" />
+        </EntityType>
+        <Association Name="orders_ibfk_1">
+          <End Role="staff" Type="Self.staff" Multiplicity="0..1" />
+          <End Role="orders" Type="Self.orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="staff">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="orders">
+              <PropertyRef Name="IdEmployee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="staff_ibfk_1">
+          <End Role="subdivision" Type="Self.subdivision" Multiplicity="0..1" />
+          <End Role="staff" Type="Self.staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subdivision">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="staff">
+              <PropertyRef Name="IdSubdivision" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="subdivision_ibfk_1">
+          <End Role="staff" Type="Self.staff" Multiplicity="0..1" />
+          <End Role="subdivision" Type="Self.subdivision" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="staff">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="subdivision">
+              <PropertyRef Name="IdEmployee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище VVContextContainer">
+          <EntitySet Name="orders" EntityType="Self.orders" Schema="vv" store:Type="Tables" />
+          <EntitySet Name="staff" EntityType="Self.staff" Schema="vv" store:Type="Tables" />
+          <EntitySet Name="subdivision" EntityType="Self.subdivision" Schema="vv" store:Type="Tables" />
+          <AssociationSet Name="orders_ibfk_1" Association="Self.orders_ibfk_1">
+            <End Role="staff" EntitySet="staff" />
+            <End Role="orders" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="staff_ibfk_1" Association="Self.staff_ibfk_1">
+            <End Role="subdivision" EntitySet="subdivision" />
+            <End Role="staff" EntitySet="staff" />
+          </AssociationSet>
+          <AssociationSet Name="subdivision_ibfk_1" Association="Self.subdivision_ibfk_1">
+            <End Role="staff" EntitySet="staff" />
+            <End Role="subdivision" EntitySet="subdivision" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VVContext" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="Int64" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IdEmployee" Type="Int64" />
+          <NavigationProperty Name="staff" Relationship="Self.orders_ibfk_1" FromRole="orders" ToRole="staff" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfBirth" Type="DateTime" />
+          <Property Name="Floor" Type="String" MaxLength="65532" FixedLength="false" Unicode="false" />
+          <Property Name="IdSubdivision" Type="Int64" />
+          <NavigationProperty Name="orders" Relationship="Self.orders_ibfk_1" FromRole="staff" ToRole="orders" />
+          <NavigationProperty Name="subdivision" Relationship="Self.staff_ibfk_1" FromRole="staff" ToRole="subdivision" />
+          <NavigationProperty Name="subdivision1" Relationship="Self.subdivision_ibfk_1" FromRole="staff" ToRole="subdivision" />
+        </EntityType>
+        <EntityType Name="Subdivision">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IdEmployee" Type="Int64" />
+          <NavigationProperty Name="staff" Relationship="Self.staff_ibfk_1" FromRole="subdivision" ToRole="staff" />
+          <NavigationProperty Name="staff1" Relationship="Self.subdivision_ibfk_1" FromRole="subdivision" ToRole="staff" />
+        </EntityType>
+        <Association Name="orders_ibfk_1">
+          <End Role="staff" Type="VVContext.Staff" Multiplicity="0..1" />
+          <End Role="orders" Type="VVContext.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="staff">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="orders">
+              <PropertyRef Name="IdEmployee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="staff_ibfk_1">
+          <End Role="subdivision" Type="VVContext.Subdivision" Multiplicity="0..1" />
+          <End Role="staff" Type="VVContext.Staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subdivision">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="staff">
+              <PropertyRef Name="IdSubdivision" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="subdivision_ibfk_1">
+          <End Role="staff" Type="VVContext.Staff" Multiplicity="0..1" />
+          <End Role="subdivision" Type="VVContext.Subdivision" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="staff">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="subdivision">
+              <PropertyRef Name="IdEmployee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="vvEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="orders" EntityType="VVContext.Order" />
+          <EntitySet Name="staff" EntityType="VVContext.Staff" />
+          <EntitySet Name="subdivision" EntityType="VVContext.Subdivision" />
+          <AssociationSet Name="orders_ibfk_1" Association="Self.orders_ibfk_1">
+            <End Role="staff" EntitySet="staff" />
+            <End Role="orders" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="staff_ibfk_1" Association="Self.staff_ibfk_1">
+            <End Role="subdivision" EntitySet="subdivision" />
+            <End Role="staff" EntitySet="staff" />
+          </AssociationSet>
+          <AssociationSet Name="subdivision_ibfk_1" Association="Self.subdivision_ibfk_1">
+            <End Role="staff" EntitySet="staff" />
+            <End Role="subdivision" EntitySet="subdivision" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище VVContextContainer" CdmEntityContainer="vvEntities">
+          <EntitySetMapping Name="orders">
+            <EntityTypeMapping TypeName="VVContext.Order">
+              <MappingFragment StoreEntitySet="orders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdEmployee" ColumnName="IdEmployee" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="staff">
+            <EntityTypeMapping TypeName="VVContext.Staff">
+              <MappingFragment StoreEntitySet="staff">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Floor" ColumnName="Floor" />
+                <ScalarProperty Name="IdSubdivision" ColumnName="IdSubdivision" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subdivision">
+            <EntityTypeMapping TypeName="VVContext.Subdivision">
+              <MappingFragment StoreEntitySet="subdivision">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdEmployee" ColumnName="IdEmployee" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
